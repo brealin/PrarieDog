@@ -2,29 +2,26 @@ import socket
 from threading import Thread
 from collections import deque
 from Communication import Communication
+from Server import Server
 
 class Play(Thread,Communication):
 # Maintains one connection to server and plays transmitted audio.   
-    def __init__(self,addr):
+    def __init__(self,cli):
         Thread.__init__(self)
         Communication.__init__(self)
-        self.BcstIp = addr
-         #longer play queue than record queue. frames getting pushed off while trying to write to strm?
-        self.frames = deque([],maxlen=self.PlyData.maxlen * 2)         
+        self.cli = cli
+        self.frames = deque([],maxlen=self.PlyData.maxlen)         
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.start()
         self.buf = 0
+        self.start()
 
     def run(self):
-        self.s.connect((self.BcstIp, self.StrmPort))
-        self.Ts = Thread(target = self.tcpStream)
-        self.Tp = Thread(target = self.ply,)
-        self.Ts.start()
-        self.Tp.start()
-        print("Playing from: " + self.BcstIp + "...",)                
-        #self.Ts.join()
-        #self.Tp.join()
-
+        while True:
+            for ip,sock in self.cli.group.items():
+                soundData, addr = sock.recvfrom(self.PlyData.maxlen)
+                self.frames.append(soundData)
+                self.Ply.write(self.frames.pop(), self.Ply._frames_per_buffer)
+                                          
     def tcpStream(self):
         #TODO: while self.stream.is_active 
         while True:
