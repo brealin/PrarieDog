@@ -28,7 +28,7 @@ class Client(Thread,Communication):
                 pass
 
             if (len(newIp) > 0):
-                #if (str(newIp) != str(self.MyAddr)):
+                if (str(newIp) != str(self.MyAddr)):
                     if not (newIp in self.group):
                         ss.connect((newIp,self.StrmPort))
                         self.group[newIp] = ss

@@ -28,6 +28,7 @@ brd = Broadcast(srv)
 
 #Start one play thread. Inherits client group and merges incoming stream from each sock.
 ply = Play(cli)
+#ply.join()
 
 #TODO: disoonnect from server
 #TODO: disoonnect group

@@ -22,30 +22,33 @@ class Server(Thread,Communication):
         self.ss.bind((self.MyAddr,self.StrmPort))
 
         while True:
-            if self.host:        
+            skip = False        
+            if self.host:
                 newIp = ''
                 newAddr = ('','')
                 newsock = None
                 self.s.listen()                                # Now wait for client connection.
                 newsock, newAddr = self.s.accept()             # Establish connection with client.
                 newIp = str(newAddr[0])
-
+               
                 if (newIp not in self.clients):
                     #if (str(newIp) != str(self.MyAddr)):
-                        self.clients[newIp] = newsock
-                        print('Got connection from ' + newIp,)
+                    self.clients[newIp] = newsock
+                    print('Got connection from ' + newIp,)
+                    if (str(newIp) == str(self.MyAddr)):
+                        skip = True
 
                 for k in self.clients:                          #Send the new client every client and every client the new client                 #key=ip, value=sock
                     for key, value in self.clients.items():
                         value.send(k.encode())
-
-            self.ss.listen()
-            mbrsock, mbraddr = self.ss.accept()
-            mbrIp = str(mbraddr[0])
-            if (mbrIp not in self.members):
-                #if (str(newIp) != str(self.MyAddr)):
-                    self.members[mbrIp] = mbrsock
-                    print('Broadcast connection est with' + mbrIp,)
+            if not skip:
+                self.ss.listen()
+                mbrsock, mbraddr = self.ss.accept()
+                mbrIp = str(mbraddr[0])
+                if (mbrIp not in self.members):
+                    if (str(newIp) != str(self.MyAddr)):
+                        self.members[mbrIp] = mbrsock
+                        print('Broadcast connection est with' + mbrIp,)
 
             #time.sleep(2)
         self.s.close()
