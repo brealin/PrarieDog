@@ -17,7 +17,6 @@ com = Communication(addr=addr)
 host = False
 if not (len(addr) > 0):
    host = True
-#TODO: implement host and non host logic
 srv = Server(host)
 
 #Join a group. One client thread. Inherits com data, recieves group meta from srv and maintains a sock to each.
@@ -26,9 +25,9 @@ cli = Client()
 #Start one broadcast thread. Inherits client group and creates outgoing stream to each sock.
 brd = Broadcast(srv)
 
-#Start one play thread. Inherits client group and merges incoming stream from each sock.
+#Start one play thread. Inherits client group and merges incoming stream from each sock. Don't continue until disconnect.
 ply = Play(cli)
-#ply.join()
+ply.join()
 
 #TODO: disoonnect from server
 #TODO: disoonnect group

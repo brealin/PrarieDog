@@ -18,8 +18,9 @@ class Server(Thread,Communication):
         print('Waiting for clients...',)
 
     def run(self):
-        self.s.bind((self.MyAddr,self.SrvrPort))
         self.ss.bind((self.MyAddr,self.StrmPort))
+        if self.host:
+            self.s.bind((self.MyAddr,self.SrvrPort))
 
         while True:
             skip = False        
@@ -46,9 +47,9 @@ class Server(Thread,Communication):
                 mbrsock, mbraddr = self.ss.accept()
                 mbrIp = str(mbraddr[0])
                 if (mbrIp not in self.members):
-                    if (str(newIp) != str(self.MyAddr)):
+                    if (str(mbrIp) != str(self.MyAddr)):
                         self.members[mbrIp] = mbrsock
-                        print('Broadcast connection est with' + mbrIp,)
+                        print('Broadcast connection est with ' + mbrIp,)
 
             #time.sleep(2)
         self.s.close()

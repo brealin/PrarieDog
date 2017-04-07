@@ -13,7 +13,7 @@ class Client(Thread,Communication):
         #self.daemon = True
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.group = {}
-        self.new = deque()
+        self.groupsocks = []
         self.start()
 
     def run(self):
@@ -28,11 +28,11 @@ class Client(Thread,Communication):
                 pass
 
             if (len(newIp) > 0):
-                if (str(newIp) != str(self.MyAddr)):
-                    if not (newIp in self.group):
+                if not (newIp in self.group):
+                    if (str(newIp) != str(self.MyAddr)):
                         ss.connect((newIp,self.StrmPort))
                         self.group[newIp] = ss
-                        self.new.append(newIp)
+                        self.groupsocks.append(ss)
                         print("New member: " + str(newIp))
 
             #time.sleep(2)

@@ -1,4 +1,5 @@
 import socket
+import select
 from threading import Thread
 from collections import deque
 from Communication import Communication
@@ -17,21 +18,12 @@ class Play(Thread,Communication):
 
     def run(self):
         while True:
-            for ip,sock in self.cli.group.items():
-                soundData, addr = sock.recvfrom(self.PlyData.maxlen)
-                self.frames.append(soundData)
-                self.Ply.write(self.frames.pop(), self.Ply._frames_per_buffer)
-                                          
-    def tcpStream(self):
-        #TODO: while self.stream.is_active 
-        while True:
-            soundData, addr = self.s.recvfrom(self.frames.maxlen)
-            self.frames.append(soundData)
-    
-        self.s.close()
-    
-    def ply(self):
-        #TODO: while self.stream.is_active 
-        while True:
-            while len(self.frames) > self.buf:
-                self.Ply.write(self.frames.pop(), self.Ply._frames_per_buffer)
+            try:
+                groupsocksready,_,_ = select.select(self.cli.groupsocks, [], []) 
+                for sock in groupsocksready:
+                    soundData, addr = sock.recvfrom(self.PlyData.maxlen)
+                    self.frames.append(soundData)
+                    #TODO: Maybe need to write to its own stream idk
+                    self.Ply.write(self.frames.pop(), self.Ply._frames_per_buffer)
+            except:
+                pass                                      
