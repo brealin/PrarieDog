@@ -8,21 +8,16 @@ class Communication(object):
         def __init__(self, addr):
             self.MyName = socket.gethostname()
             self.MyAddr = socket.gethostbyname(self.MyName)
-            self.SrvrAddr = addr
-            if not self.SrvrAddr:
-                self.SrvrAddr = ''
             try:
                 netifaces.ifaddresses('wlan0')
                 self.MyAddr = netifaces.ifaddresses('wlan0')[2][0]['addr']
             except:
                 pass
-            if not(len(self.SrvrAddr) > 0):
-                self.SrvrAddr = self.MyAddr        
             self.StrmPort = 9000
             self.SrvrPort = 8000
             self.Chn = 1
             self.Rt = 8000
-            self.Chk = 1024
+            self.Chk = 512
             self.Fmt = pyaudio.paInt16
             self.RecData = deque([],maxlen=self.Chk * self.Chn * 2)
             self.PlyData = deque([],maxlen=self.Chk * self.Chn * 2)
@@ -41,6 +36,11 @@ class Communication(object):
                          frames_per_buffer=self.Chk,
                          stream_callback=self.RecCallback)
             self.Rec.start_stream
+            self.group = []
+            with open('member.config','r') as f:
+                for line in f:
+                    #if (line != self.MyAddr):
+                        self.group.append(line)
 
         def RecCallback(self,in_data,frame_count,time_info,status):
             self.RecData.append(in_data)

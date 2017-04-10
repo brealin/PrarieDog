@@ -19,6 +19,6 @@ class Broadcast(Thread,Communication):
         #TODO: while self.stream.is_active 
         while True:
             if self.RecData:
-                for ip,sock in self.srv.members.items():
+                for sock in self.srv.clients:
                     frm = self.RecData
                     sock.send(frm.pop())                          

@@ -8,16 +8,9 @@ import socket
 import pyaudio
 #import netifaces
 
-addr = input('Press enter to host. Otherwise, supply host address:  ',)
-
 #Start one recording and one playing stream. Write record data to queue.
-com = Communication(addr=addr)
-
-#Start a group. One server thread. Inherits comm data and maintains sockets.
-host = False
-if not (len(addr) > 0):
-   host = True
-srv = Server(host)
+com = Communication()
+srv = Server()
 
 #Join a group. One client thread. Inherits com data, recieves group meta from srv and maintains a sock to each.
 cli = Client()
