@@ -1,4 +1,5 @@
 import socket
+import select
 from threading import *
 from collections import deque
 import time
@@ -14,18 +15,23 @@ class Client(Thread,Communication):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.group = {}
         self.groupsocks = []
+        self.srvrsock = []
         self.start()
 
     def run(self):
         self.s.connect((self.SrvrAddr,self.SrvrPort))
+        self.srvrsock.append(s)
 
         while True:
             ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             newIp = ''
-            try:
-                newIp = str(self.s.recv(128).decode())
-            except:
-                pass
+            self.srvrsockready,_,_ = select.select(self.srvrsock, [], []) 
+            self.groupsocksready,_,_ = select.select(self.groupsocks, [], []) 
+            for sock in srvrsockready:
+                try:
+                    newIp = str(sock.recv(128).decode())
+                except:
+                    pass
 
             if (len(newIp) > 0):
                 if not (newIp in self.group):

@@ -19,11 +19,11 @@ class Play(Thread,Communication):
     def run(self):
         while True:
             try:
-                groupsocksready,_,_ = select.select(self.cli.groupsocks, [], []) 
-                for sock in groupsocksready:
+                #groupsocksready,_,_ = select.select(self.cli.groupsocks, [], []) 
+                for sock in self.cli.groupsocksready:
                     soundData, addr = sock.recvfrom(self.PlyData.maxlen)
-                    self.frames.append(soundData)
+                    #self.frames.append(soundData)
                     #TODO: Maybe need to write to its own stream idk
-                    self.Ply.write(self.frames.pop(), self.Ply._frames_per_buffer)
+                    self.Ply.write(soundData, self.Ply._frames_per_buffer)
             except:
                 pass                                      
