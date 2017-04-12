@@ -1,7 +1,6 @@
-import socket
-import time
 from Communication import Communication
 from threading import *
+import socket
 
 class Server(Thread,Communication):
 # Maintains many client connections.
@@ -11,8 +10,7 @@ class Server(Thread,Communication):
         self.clients = []
         self.ss = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.start()
-        print('Server started!',)
-        print('Waiting for clients...',)
+        print('Broadcasting, waiting for member(s) to connect...',)
 
     def run(self):
         self.ss.bind((self.MyAddr,self.StrmPort))
@@ -22,5 +20,5 @@ class Server(Thread,Communication):
             mbrIp = str(mbraddr[0])
             if (mbrIp not in self.clients):
                     self.clients.append(mbrsock)
-                    print('Broadcast connection est with ' + mbrIp,)
+                    print('Broadcast connection est with ' + mbrIp + '  ',)
         self._stop

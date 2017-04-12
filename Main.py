@@ -3,22 +3,21 @@ from Client import Client
 from Server import Server
 from Play import Play
 from Broadcast import Broadcast
-from collections import deque
-import socket
-import pyaudio
-#import netifaces
 
 #Start one recording and one playing stream. Write record data to queue.
 com = Communication()
+
+#Wait for connections from each member of group, maintain server socket collection.
+#TODO: do we need to maintain non-blocking server socket collection? - Does it even block until bytes are received?
 srv = Server()
 
-#Join a group. One client thread. Inherits com data, recieves group meta from srv and maintains a sock to each.
+#Connect to each group member, maintain non-blocking client socket collection.
 cli = Client()
 
-#Start one broadcast thread. Inherits client group and creates outgoing stream to each sock.
+#Start one broadcast thread, using server sockets.
 brd = Broadcast(srv)
 
-#Start one play thread. Inherits client group and merges incoming stream from each sock. Don't continue until disconnect.
+#Start one play thread, using client sockets. Join to prevent fifth thread.
 ply = Play(cli)
 ply.join()
 

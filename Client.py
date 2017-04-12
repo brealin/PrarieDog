@@ -1,10 +1,7 @@
-import socket
-import select
 from threading import *
-from collections import deque
-import time
-from Play import Play
 from Communication import Communication
+import select
+import socket
 
 class Client(Thread,Communication):
 # Maintains one server connection and group info.
@@ -19,9 +16,17 @@ class Client(Thread,Communication):
     def run(self):
         for ip in self.group:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect((ip,self.StrmPort))
+            s.settimeout(30)
+            c = False
+            while not c:
+                try:
+                    s.connect((ip,self.StrmPort))
+                    c = True
+                except socket.error as exc:
+                    print("Caught exception socket.error : %s" % exc,)
+
             self.groupsocks.append(s)
-            print("New member: " + str(ip))
+            print("Play connection est with: " + str(ip) + "    ",)
 
         while True:
             try:

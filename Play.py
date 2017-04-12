@@ -1,9 +1,7 @@
-import socket
-import select
 from threading import Thread
-from collections import deque
 from Communication import Communication
-from Server import Server
+import socket
+from collections import deque
 
 class Play(Thread,Communication):
 # Maintains one connection to server and plays transmitted audio.   

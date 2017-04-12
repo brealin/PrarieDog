@@ -1,6 +1,5 @@
 import pyaudio
 import socket
-#import netifaces
 from collections import deque
 
 class Communication(object):
@@ -39,7 +38,7 @@ class Communication(object):
             self.group = []
             with open('member.config','r') as f:
                 for line in f:
-                    #if (line != self.MyAddr):
+                    if (line != self.MyAddr):
                         self.group.append(line)
 
         def RecCallback(self,in_data,frame_count,time_info,status):

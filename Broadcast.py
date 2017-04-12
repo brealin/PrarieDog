@@ -1,10 +1,5 @@
-import pyaudio
-import socket
 from threading import Thread
-import time
-from collections import deque
 from Communication import Communication
-from Server import Server
 
 class Broadcast(Thread,Communication):
 # Maintains many client connections and transmits audio.   
