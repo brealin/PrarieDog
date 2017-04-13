@@ -15,7 +15,17 @@ class Play(Thread,Communication):
         self.start()
 
     def run(self):
+        self.Tp = Thread(target = self.ply,)
+        self.Tp.start()
+
         while True:
             for sock in self.cli.groupsocksready:
                 soundData, addr = sock.recvfrom(self.PlyData.maxlen)
-                self.Ply.write(soundData, self.Ply._frames_per_buffer)
+                self.frames.append(soundData)
+                #self.Ply.write(soundData, self.Ply._frames_per_buffer)
+
+    def ply(self):
+        #TODO: while self.stream.is_active 
+        while True:
+            while len(self.frames) > self.buf:
+                self.Ply.write(self.frames.pop(), self.Ply._frames_per_buffer)

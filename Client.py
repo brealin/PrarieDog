@@ -15,6 +15,7 @@ class Client(Thread,Communication):
 
     def run(self):
         for ip in self.group:
+            ip = ip.strip('\n')
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(30)
             c = False
