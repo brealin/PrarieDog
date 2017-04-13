@@ -21,4 +21,3 @@ class Server(Thread,Communication):
             if (mbrIp not in self.clients):
                     self.clients.append(mbrsock)
                     print('Broadcast connection est with ' + mbrIp + '  ',)
-        self._stop
