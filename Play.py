@@ -27,5 +27,5 @@ class Play(Thread,Communication):
     def ply(self):
         #TODO: while self.stream.is_active 
         while True:
-            while len(self.frames) > self.buf:
+            while self.frames:
                 self.Ply.write(self.frames.pop(), self.Ply._frames_per_buffer)

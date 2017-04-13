@@ -12,7 +12,6 @@ class Communication(object):
                 self.MyAddr = netifaces.ifaddresses('wlan0')[2][0]['addr']
             except:
                 pass
-            self.StrmPort = 9000
             self.SrvrPort = 8000
             self.Chn = 1
             self.Rt = 8000
@@ -35,11 +34,17 @@ class Communication(object):
                          frames_per_buffer=self.Chk,
                          stream_callback=self.RecCallback)
             self.Rec.start_stream
-            self.group = []
+            self.group = {}
             with open('member.config','r') as f:
                 for line in f:
-                    if (line != self.MyAddr):
-                        self.group.append(line)
+                    x = line.index(':')
+                    ip = line[0:x]
+                    port = line[x+1:]
+                    port = port.strip('\n')
+                    if (ip == str(self.MyAddr)):
+                        self.SrvrPort = int(port)
+                    else:
+                        self.group[ip]=int(port)
 
         def RecCallback(self,in_data,frame_count,time_info,status):
             self.RecData.append(in_data)

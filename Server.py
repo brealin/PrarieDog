@@ -13,7 +13,7 @@ class Server(Thread,Communication):
         print('Broadcasting, waiting for member(s) to connect...',)
 
     def run(self):
-        self.ss.bind((self.MyAddr,self.StrmPort))
+        self.ss.bind((self.MyAddr,self.SrvrPort))
         for i in range(0,len(self.group)):
             self.ss.listen()
             mbrsock, mbraddr = self.ss.accept()
