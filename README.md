@@ -1,2 +1,2 @@
 # PrarieDog
-WLAN Audio Streaming
+WLAN VoIP
