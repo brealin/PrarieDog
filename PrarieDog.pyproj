@@ -12,7 +12,7 @@
     <OutputPath>.</OutputPath>
     <Name>PrarieDog</Name>
     <RootNamespace>PrarieDog</RootNamespace>
-    <InterpreterId>{f7201539-0e7a-43de-b4b0-58bae5d826df}</InterpreterId>
+    <InterpreterId>{67dbb078-d61d-46fb-be7f-87db493895d0}</InterpreterId>
     <InterpreterVersion>3.5</InterpreterVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -24,21 +24,19 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Communication.py">
+    <Compile Include="AudioStream.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Play.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Client.py" />
     <Compile Include="Main.py" />
     <Compile Include="Broadcast.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Server.py" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="{f7201539-0e7a-43de-b4b0-58bae5d826df}\3.5" />
+    <InterpreterReference Include="{67dbb078-d61d-46fb-be7f-87db493895d0}\3.5" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
