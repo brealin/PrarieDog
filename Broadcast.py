@@ -20,13 +20,13 @@ class Broadcast(Thread,AudioStream):
 
         #TODO: while self.stream.is_active 
         while 1:
-            while self.RecData:
-                for ip,port in self.group.items():
-                    for ip,port in itertools.cycle(self.group.items()):
-                        #frms = copy.copy(self.RecData) 
-                        try:
-                            self.s.sendto(self.RecData[0],(ip,port))
-                        except socket.timeout as e:
-                            print ('socket send timed out:  '+ip+':'+str(port)+' '+str(e),)
-                            pass
+            if self.RecData:
+                    #for ip,port in self.group.items():
+                for ip,port in itertools.cycle(self.group.items()):
+                    #frms = copy.copy(self.RecData) 
+                    try:
+                        self.s.sendto(self.RecData[0],(ip,port))
+                    except socket.timeout as e:
+                        print ('socket send timed out:  '+ip+':'+str(port)+' '+str(e),)
+                        pass
         #self.Ply.stop_stream

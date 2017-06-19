@@ -22,7 +22,7 @@ class AudioStream(object):
             self.Tmt = 6
             self.RcvChk = len(self.group.keys()) if len(self.group.keys()) > 1 else 2
             self.Fmt = pyaudio.paInt16
-            with open('C:\\repo.git\\hello\\PrarieDog\\member.config','r') as file:
+            with open('member.config','r') as file:
                 for line in file:
                     x = line.index(':')
                     ip = line[0:x]
