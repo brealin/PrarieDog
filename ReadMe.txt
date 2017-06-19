@@ -6,5 +6,11 @@
 
 	Linux:
 		sudo apt-get install python-pyaudio
-3. Run PrarieDog
+		
+3. Modify member.config to include a distinct [ip]:[port] for each group member to connect (including self)
+	(eg):
+		192.168.1.6:8000
+		192.168.1.7:8001
+
+4. Run PrarieDog
 	cmd window > python.exe ..\PrarieDog\Main.py
