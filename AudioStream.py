@@ -1,6 +1,7 @@
 import pyaudio
 import time
 import socket
+import audioop
 from collections import deque
 
 class AudioStream(object):
@@ -17,7 +18,8 @@ class AudioStream(object):
                 pass
             self.SrvrPort = 8000
             self.Chn = 1
-            self.Rt = 6000
+            self.InRt = 44100
+            #self.OutRt = 6000
             self.Chk = 2048
             self.Tmt = 6
             self.RcvChk = len(self.group.keys()) if len(self.group.keys()) > 1 else 2
@@ -30,21 +32,21 @@ class AudioStream(object):
                     port = port.strip('\n')
                     if (ip == str(self.MyAddr)):
                         self.SrvrPort = int(port)
-                    else:
+                    #else:
                         self.group[ip]=int(port)
-            self.RecData = deque([],maxlen=1 * self.Chn * 2)
-            self.PlyData = deque([],maxlen=1 * self.Chn * len(self.group.keys()) * 16)
+            self.RecData = deque([],maxlen=self.Chn * len(self.group.keys()))
+            self.PlyData = deque([],maxlen=self.Chn * len(self.group.keys()) * 16)
             p = pyaudio.PyAudio()  
             self.Ply = p.open(format=self.Fmt,
                         channels=self.Chn,
-                        rate=self.Rt,
+                        rate=self.InRt,
                         output=True,
                         frames_per_buffer=self.Chk
                         #stream_callback=pCallback
                         )
             self.Rec = p.open(format=self.Fmt,
                          channels=self.Chn,
-                         rate=self.Rt,
+                         rate=self.InRt,
                          input=True,
                          frames_per_buffer=self.Chk,
                          stream_callback=self.RecCallback
@@ -52,6 +54,7 @@ class AudioStream(object):
             self.Rec.start_stream
 
         def RecCallback(self,in_data,frame_count,time_info,status):
+            #converted = audioop.ratecv(in_data, 2, 1, self.InRt, self.OutRt, None)
             self.RecData.append(in_data)           
             return (in_data, pyaudio.paContinue)
 

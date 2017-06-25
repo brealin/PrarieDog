@@ -39,6 +39,6 @@ class Play(Thread,AudioStream):
             sys.stdout.write("Buffering: %d%%   \r" % (round(len(self.PlyData)/(self.PlyData.maxlen if self.PlyData.maxlen > 0 else 1),2)*100))
             sys.stdout.flush()
             if (len(self.PlyData) > self.PlyData.maxlen/2):
-                while self.PlyData :
+                #while self.PlyData :
                     self.Ply.write(self.PlyData.pop(), self.Ply._frames_per_buffer)
         #self.Ply.stop_stream
