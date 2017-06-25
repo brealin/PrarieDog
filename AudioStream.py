@@ -32,7 +32,7 @@ class AudioStream(object):
                     port = port.strip('\n')
                     if (ip == str(self.MyAddr)):
                         self.SrvrPort = int(port)
-                    #else:
+                    else:
                         self.group[ip]=int(port)
             self.RecData = deque([],maxlen=self.Chn * len(self.group.keys()))
             self.PlyData = deque([],maxlen=self.Chn * len(self.group.keys()) * 16)
